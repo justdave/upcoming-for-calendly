@@ -37,6 +37,9 @@ function calendly_upcoming_shortcode ( $atts = [], $content = null, $tag = '' ) 
     ]);
     $event_list = $data->collection;
     $output = '<div class="calendly_upcoming_event_list"><ul>';
+    if (count($event_list) == 0) {
+        $output .= '<li class="calendly_upcoming_event">No events currently scheduled.</li>';
+    }
     foreach ($event_list as $event) {
         $event_date = date_create($event->start_time);
         $event_date->setTimeZone(wp_timezone());
