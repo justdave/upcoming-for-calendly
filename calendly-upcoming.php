@@ -9,6 +9,7 @@
  * Author Email: github@justdave.net
  * GitHub Plugin URI: https://github.com/justdave/calendly-upcoming
  * Primary Branch: main
+ * Release Asset: true
  * */
 
 /*
