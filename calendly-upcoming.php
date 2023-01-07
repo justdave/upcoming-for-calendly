@@ -3,7 +3,7 @@
  * Plugin Name: Calendly Upcoming Events
  * Plugin URI: https://github.com/justdave/calendly-upcoming
  * Description: Wordpress plugin to house custom stuff for this website
- * Version: 1.0
+ * Version: 1.0.1
  * Author: David Miller
  * Author URI: https://github.com/justdave
  * Author Email: github@justdave.net
