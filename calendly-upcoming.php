@@ -7,6 +7,8 @@
  * Author: David Miller
  * Author URI: https://github.com/justdave
  * Author Email: github@justdave.net
+ * GitHub Plugin URI: https://github.com/calendly-upcoming
+ * Primary Branch: main
  * */
 
 /*
