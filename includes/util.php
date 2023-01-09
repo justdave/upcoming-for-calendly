@@ -18,14 +18,17 @@
  */
 
 
-function _uefc_api_call( $path, $params = NULL ) {
+function _uefc_api_call( $path, $params = NULL, $apikey = NULL ) {
     $service_url = 'https://api.calendly.com/' . $path;
     if ($params) {
         $service_url .= "?" . http_build_query($params);
     }
+    if (!$apikey) {
+        $apikey = get_option("uefc_apikey");
+    }
     $curl = curl_init($service_url);
     $curl_headers = [
-        'Authorization: Bearer ' . get_option("uefc_apikey"),
+        'Authorization: Bearer ' . $apikey,
         'Content-Type: application/json',
     ];
     curl_setopt_array($curl, [

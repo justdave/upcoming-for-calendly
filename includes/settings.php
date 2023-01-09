@@ -29,17 +29,18 @@ function uefc_options() {
     $hidden_field_name = 'uefc_hidden';
     if( isset($_POST[ $hidden_field_name ]) && $_POST[ $hidden_field_name ] == 'uefc_settings') {
         // process form code here
-        $foundchanges = false;
 
         $uefc_apikey = trim($_POST['uefc_apikey']);
         if ($uefc_apikey) {
-            update_option('uefc_apikey', $uefc_apikey);
-            $foundchanges = true;
+            $data = _uefc_api_call('users/me', [], $uefc_apikey);
+            if (property_exists($data, 'message')) {
+                ?><div class="error">The Access Token you supplied is not valid. It was not saved.</div><?php
+            } else {
+                update_option('uefc_apikey', $uefc_apikey);
+                ?><div class="updated"><p><strong>Access Token successfully updated.</div><?php
+            }
         }
 
-        if ($foundchanges) {
-            ?><div class="updated"><p><strong>Changes saved.</strong></p></div><?php
-        }
     }
     ?>
 <h3>Upcoming Events for Calendly Settings</h3>
@@ -54,7 +55,7 @@ function uefc_options() {
         }
     }
     ?>
-<form name="calendly-upcoming-settings" method="post" action="">
+<form name="upcoming-for-calendly-settings" method="post" action="">
 <input type="hidden" name="<?php echo $hidden_field_name; ?>" value="uefc_settings">
 <table class="form-table">
 <tbody>
