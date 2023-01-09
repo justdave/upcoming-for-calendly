@@ -35,8 +35,13 @@ function uefc_shortcode ( $atts = [], $content = null, $tag = '' ) {
         'status' => 'active',
         'min_start_time' => $curdate_string,
     ]);
-    $event_list = $data->collection;
+    $event_list = [];
     $output = '<div class="uefc_event_list"><ul>';
+    foreach ($data->collection as $event) {
+        if (($attr['event'] === '') || ($event->name == $attr['event'])) {
+            $event_list[] = $event;
+        }
+    }
     if (count($event_list) == 0) {
         $output .= '<li class="uefc_event">No events currently scheduled.</li>';
     }
@@ -52,14 +57,12 @@ function uefc_shortcode ( $atts = [], $content = null, $tag = '' ) {
         } else if ($slots > 1) {
             $slots_string = $slots . ' slots remaining';
         }
-        if (($attr['event'] === '') || ($event->name == $attr['event'])) {
-            $output .= '<li class="uefc_event">' .
-                '<a href="' . $avail_info->scheduling_url . '" target="_blank">' .
-                htmlspecialchars($event_date_string) .
-                '</a>' .
-                ' (' . htmlspecialchars($slots_string) . ')' .
-                '</li>';
-        }
+        $output .= '<li class="uefc_event">' .
+            '<a href="' . $avail_info->scheduling_url . '" target="_blank">' .
+            htmlspecialchars($event_date_string) .
+            '</a>' .
+            ' (' . htmlspecialchars($slots_string) . ')' .
+            '</li>';
     }
     $output .= '</ol></div>';
     return $output;
