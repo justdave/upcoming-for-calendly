@@ -17,8 +17,8 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-add_shortcode( 'calendly_upcoming', 'calendly_upcoming_shortcode' );
-function calendly_upcoming_shortcode ( $atts = [], $content = null, $tag = '' ) {
+add_shortcode( 'uefc', 'uefc_shortcode' );
+function uefc_shortcode ( $atts = [], $content = null, $tag = '' ) {
     $atts = array_change_key_case( (array) $atts, CASE_LOWER );
     $attr =  shortcode_atts([
             'event' => '',
@@ -26,25 +26,25 @@ function calendly_upcoming_shortcode ( $atts = [], $content = null, $tag = '' ) 
 	);
     $curdate = date_create();
     $curdate_string = date_format($curdate, DATE_ISO8601);
-    $user = _calendly_upcoming_api_call('users/me');
+    $user = _uefc_api_call('users/me');
     if (property_exists($user, 'message')) {
         return "[Calendly Access Token is invalid. Please contact the site administrator.]";
     }
-    $data = _calendly_upcoming_api_call('scheduled_events', [
+    $data = _uefc_api_call('scheduled_events', [
         'user' => $user->resource->uri,
         'status' => 'active',
         'min_start_time' => $curdate_string,
     ]);
     $event_list = $data->collection;
-    $output = '<div class="calendly_upcoming_event_list"><ul>';
+    $output = '<div class="uefc_event_list"><ul>';
     if (count($event_list) == 0) {
-        $output .= '<li class="calendly_upcoming_event">No events currently scheduled.</li>';
+        $output .= '<li class="uefc_event">No events currently scheduled.</li>';
     }
     foreach ($event_list as $event) {
         $event_date = date_create($event->start_time);
         $event_date->setTimeZone(wp_timezone());
         $event_date_string = date_format($event_date, 'l, F j, Y - g:i a');
-        $avail_info = _calendly_upcoming_get_event_availability_info($event->event_type, $event->start_time);
+        $avail_info = _uefc_get_event_availability_info($event->event_type, $event->start_time);
         $slots = $avail_info->invitees_remaining;
         $slots_string = 'full';
         if ($slots == 1) {
@@ -53,7 +53,7 @@ function calendly_upcoming_shortcode ( $atts = [], $content = null, $tag = '' ) 
             $slots_string = $slots . ' slots remaining';
         }
         if (($attr['event'] === '') || ($event->name == $attr['event'])) {
-            $output .= '<li class="calendly_upcoming_event">' .
+            $output .= '<li class="uefc_event">' .
                 '<a href="' . $avail_info->scheduling_url . '" target="_blank">' .
                 htmlspecialchars($event_date_string) .
                 '</a>' .

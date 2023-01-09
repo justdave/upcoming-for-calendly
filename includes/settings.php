@@ -17,23 +17,23 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-add_action( 'admin_menu', 'calendly_upcoming_settings_menu' );
-function calendly_upcoming_settings_menu() {
-    add_options_page('Calendly Upcoming', 'Calendly Upcoming', 'manage_options', 'calendly_upcoming', 'calendly_upcoming_options' );
+add_action( 'admin_menu', 'uefc_settings_menu' );
+function uefc_settings_menu() {
+    add_options_page('Upcoming Events for Calendly', 'Upcoming Events for Calendly', 'manage_options', 'uefc', 'uefc_options' );
 }
 
-function calendly_upcoming_options() {
+function uefc_options() {
     if ( !current_user_can( 'manage_options' ) )  {
         wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
     }
-    $hidden_field_name = 'calendly_upcoming_hidden';
-    if( isset($_POST[ $hidden_field_name ]) && $_POST[ $hidden_field_name ] == 'calendly_upcoming_settings') {
+    $hidden_field_name = 'uefc_hidden';
+    if( isset($_POST[ $hidden_field_name ]) && $_POST[ $hidden_field_name ] == 'uefc_settings') {
         // process form code here
         $foundchanges = false;
 
-        $calendly_upcoming_apikey = trim($_POST['calendly_upcoming_apikey']);
-        if ($calendly_upcoming_apikey) {
-            update_option('calendly_upcoming_apikey', $calendly_upcoming_apikey);
+        $uefc_apikey = trim($_POST['uefc_apikey']);
+        if ($uefc_apikey) {
+            update_option('uefc_apikey', $uefc_apikey);
             $foundchanges = true;
         }
 
@@ -42,9 +42,9 @@ function calendly_upcoming_options() {
         }
     }
     ?>
-<h3>Calendly Upcoming Settings</h3>
+<h3>Upcoming Events for Calendly Settings</h3>
     <?php
-    $data = _calendly_upcoming_api_call('users/me');
+    $data = _uefc_api_call('users/me');
     if (property_exists($data, 'message')) {
         ?><div class="error">Your current Access Token is not valid.</div><?php
     } else {
@@ -53,16 +53,16 @@ function calendly_upcoming_options() {
     }
     ?>
 <form name="calendly-upcoming-settings" method="post" action="">
-<input type="hidden" name="<?php echo $hidden_field_name; ?>" value="calendly_upcoming_settings">
+<input type="hidden" name="<?php echo $hidden_field_name; ?>" value="uefc_settings">
 <table class="form-table">
 <tbody>
 <tr>
-  <th scope="row"><label for="calendly_upcoming_apikey">Calendly Access Token</label></th>
+  <th scope="row"><label for="uefc_apikey">Calendly Access Token</label></th>
   <td><?php
-    if (get_option("calendly_upcoming_apikey")) {
+    if (get_option("uefc_apikey")) {
        ?>For security reasons your existing Access Token is not shown here. To change it, paste a new one below.<br><?php
     }
-  ?><textarea id="calendly_upcoming_apikey" name="calendly_upcoming_apikey" class="regular-text code" rows="3"></textarea>
+  ?><textarea id="uefc_apikey" name="uefc_apikey" class="regular-text code" rows="3"></textarea>
   <p class="description">Generate an Access Token on <a href="https://calendly.com/integrations/api_webhooks" target="_blank" class="external">this page</a>, then enter it here.</p>
   </td>
 </tr>
@@ -70,7 +70,7 @@ function calendly_upcoming_options() {
 </table>
 <p class="submit"><input id="submit" class="button button-primary" type="submit" value="Save Changes" name="submit"></p>
 </form>
-<p>To place a list of your upcoming events that have already been scheduled into a post or page, use the shortcode <code>[calendly_upcoming]</code>. To restict it to a specific event type, pass the title of the event (must be an exact match) like so: <code>[calendly_upcoming event="Event Name"]</code>.</p>
+<p>To place a list of your upcoming events that have already been scheduled into a post or page, use the shortcode <code>[uefc]</code>. To restict it to a specific event type, pass the title of the event (must be an exact match) like so: <code>[uefc event="Event Name"]</code>.</p>
 <?php
     echo "</div>";
 }

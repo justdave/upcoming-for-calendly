@@ -1,13 +1,13 @@
 <?php
 /*
- * Plugin Name: Calendly Upcoming Events
- * Plugin URI: https://github.com/justdave/calendly-upcoming
- * Description: Wordpress plugin to house custom stuff for this website
+ * Plugin Name: Upcoming for Calendly
+ * Plugin URI: https://github.com/justdave/upcoming-for-calendly
+ * Description: Upcoming Events Registration List for Calendly
  * Version: 1.0.1
- * Author: David Miller
+ * Author: David D. Miller
  * Author URI: https://github.com/justdave
  * Author Email: github@justdave.net
- * GitHub Plugin URI: https://github.com/justdave/calendly-upcoming
+ * GitHub Plugin URI: https://github.com/justdave/upcoming-for-calendly
  * Primary Branch: main
  * Release Asset: true
  * */

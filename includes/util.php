@@ -18,14 +18,14 @@
  */
 
 
-function _calendly_upcoming_api_call( $path, $params = NULL ) {
+function _uefc_api_call( $path, $params = NULL ) {
     $service_url = 'https://api.calendly.com/' . $path;
     if ($params) {
         $service_url .= "?" . http_build_query($params);
     }
     $curl = curl_init($service_url);
     $curl_headers = [
-        'Authorization: Bearer ' . get_option("calendly_upcoming_apikey"),
+        'Authorization: Bearer ' . get_option("uefc_apikey"),
         'Content-Type: application/json',
     ];
     curl_setopt_array($curl, [
@@ -40,8 +40,8 @@ function _calendly_upcoming_api_call( $path, $params = NULL ) {
     return json_decode($curl_response);
 }
 
-function _calendly_upcoming_get_event_availability_info( $event_type, $start_time ) {
-    $data = _calendly_upcoming_api_call('event_type_available_times', [
+function _uefc_get_event_availability_info( $event_type, $start_time ) {
+    $data = _uefc_api_call('event_type_available_times', [
         'event_type' => $event_type,
         'start_time' => $start_time,
         'end_time'   => $start_time,
