@@ -19,7 +19,7 @@
 
 add_action( 'admin_menu', 'uefc_settings_menu' );
 function uefc_settings_menu() {
-    add_options_page('Upcoming Events for Calendly', 'Upcoming Events for Calendly', 'manage_options', 'uefc', 'uefc_options' );
+    add_options_page('Upcoming Events for Calendly', 'Upcoming Events for Calendly', 'manage_options', 'uefc-settings', 'uefc_options' );
 }
 
 function uefc_options() {
@@ -73,4 +73,14 @@ function uefc_options() {
 <p>To place a list of your upcoming events that have already been scheduled into a post or page, use the shortcode <code>[uefc]</code>. To restict it to a specific event type, pass the title of the event (must be an exact match) like so: <code>[uefc event="Event Name"]</code>.</p>
 <?php
     echo "</div>";
+}
+
+add_filter( 'plugin_action_links', 'uefc_settings_link', 10, 2 );
+function uefc_settings_link( $links, $file ) {
+    if ($file == 'upcoming-for-calendly/upcoming-for-calendly.php') {
+        $url = esc_url( add_query_arg( 'page', 'uefc-settings', get_admin_url() . 'options-general.php' ) );
+        $settings_link = '<a href="' . $url . '">Settings</a>';
+        array_push( $links, $settings_link );
+    }
+    return $links;
 }
