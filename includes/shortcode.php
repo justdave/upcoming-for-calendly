@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-add_shortcode( 'uefc', 'uefc_shortcode' );
+add_shortcode( 'upcoming-for-calendly', 'uefc_shortcode' );
 function uefc_shortcode ( $atts = [], $content = null, $tag = '' ) {
     $atts = array_change_key_case( (array) $atts, CASE_LOWER );
     $attr =  shortcode_atts([

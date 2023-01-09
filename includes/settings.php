@@ -73,7 +73,7 @@ function uefc_options() {
 </table>
 <p class="submit"><input id="submit" class="button button-primary" type="submit" value="Save Changes" name="submit"></p>
 </form>
-<p>To place a list of your upcoming events that have already been scheduled into a post or page, use the shortcode <code>[uefc]</code>. To restict it to a specific event type, pass the title of the event (must be an exact match) like so: <code>[uefc event="Event Name"]</code>.</p>
+<p>To place a list of your upcoming events that have already been scheduled into a post or page, use the shortcode <code>[upcoming-for-calendly]</code>. To restict it to a specific event type, pass the title of the event (must be an exact match) like so: <code>[upcoming-for-calendly event="Event Name"]</code>.</p>
 <?php
     echo "</div>";
 }
