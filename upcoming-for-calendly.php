@@ -4,6 +4,9 @@
  * Plugin URI: https://github.com/justdave/upcoming-for-calendly
  * Description: Upcoming Events Registration List for Calendly
  * Version: 1.0.1
+ * Requires PHP: 7.2
+ * Requires at least: 5.8
+ * Tested up to: 6.1.1
  * Author: David D. Miller
  * Author URI: https://github.com/justdave
  * Author Email: github@justdave.net

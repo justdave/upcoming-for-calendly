@@ -7,17 +7,23 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@master
-    - uses: WyriHaximus/github-action-get-previous-tag@v1
+    - name: Checkout source
+      uses: actions/checkout@master
+    - name: Get Version Number
+      uses: WyriHaximus/github-action-get-previous-tag@v1
       id: lasttag
-    - uses: thedoctor0/zip-release@master
+    - name: Generate wordpress.org assets
+      run: /bin/bash ${PWD}/.github/bin/make-readmetxt.sh
+    - name: Create Zip file
+      uses: thedoctor0/zip-release@master
       with:
         type: 'zip'
         filename: "upcoming-for-calendly-${{ steps.lasttag.outputs.tag }}.zip"
-        exclusions: '*DOCKER_ENV *docker_tag *output.log *.git*'
+        exclusions: '*DOCKER_ENV *docker_tag *output.log *.git* *.wordpress.org'
         directory: '..'
         path: 'upcoming-for-calendly'
-    - uses: ncipollo/release-action@v1
+    - name: Post to GitHub Release
+      uses: ncipollo/release-action@v1
       with:
         allowUpdates: true
         omitBodyDuringUpdate: true

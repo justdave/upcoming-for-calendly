@@ -1,0 +1,7 @@
+# Ignore Mac Finder droppings
+.DS_Store
+# Ignore VIM droppings
+*.swp
+# Ignore WordPress.org generated files
+/readme.txt
+/assets
