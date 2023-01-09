@@ -1,5 +1,5 @@
 === %%pluginname%% ===
-Contributors: justdave72
+Contributors: justdave
 Tags: calendly, calendly-api
 Requires at least: %%requireswp%%
 Tested up to: %%tested%%
