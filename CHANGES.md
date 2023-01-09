@@ -1,4 +1,4 @@
-#### [unreleased]
+#### 1.1 / 2023-01-09
 
 * add a 'Settings' link on the Plugins page
 * validate the Access Token before saving it on settings page
