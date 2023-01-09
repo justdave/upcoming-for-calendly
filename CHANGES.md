@@ -1,6 +1,7 @@
 #### [unreleased]
 
 * renamed for trademark compliance
+* add a 'Settings' link on the Plugins page
 
 #### 1.0.1 / 2023-01-07
 
