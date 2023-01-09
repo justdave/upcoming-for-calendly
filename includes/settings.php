@@ -44,12 +44,14 @@ function uefc_options() {
     ?>
 <h3>Upcoming Events for Calendly Settings</h3>
     <?php
-    $data = _uefc_api_call('users/me');
-    if (property_exists($data, 'message')) {
-        ?><div class="error">Your current Access Token is not valid.</div><?php
-    } else {
-        ?><div class="updated">Your current Access Token is valid. You are logged in as:<br>
-        <img src="<?php echo htmlspecialchars($data->resource->avatar_url); ?>" height="40" style="vertical-align: middle;"><span style="font-size: x-large;"><?php echo htmlspecialchars($data->resource->name); ?></span></div><?php
+    if (get_option("uefc_apikey")) {
+        $data = _uefc_api_call('users/me');
+        if (property_exists($data, 'message')) {
+            ?><div class="error">Your current Access Token is not valid.</div><?php
+        } else {
+            ?><div class="updated">Your current Access Token is valid. You are logged in as:<br>
+            <img src="<?php echo htmlspecialchars($data->resource->avatar_url); ?>" height="40" style="vertical-align: middle;"><span style="font-size: x-large;"><?php echo htmlspecialchars($data->resource->name); ?></span></div><?php
+        }
     }
     ?>
 <form name="calendly-upcoming-settings" method="post" action="">
