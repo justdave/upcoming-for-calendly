@@ -26,6 +26,9 @@ function uefc_options() {
     if ( !current_user_can( 'manage_options' ) )  {
         wp_die( __( 'You do not have sufficient permissions to access this page.' ) );
     }
+    ?>
+<h1>Upcoming Events for Calendly Settings</h1>
+    <?php
     $hidden_field_name = 'uefc_hidden';
     if( isset($_POST[ $hidden_field_name ]) && $_POST[ $hidden_field_name ] == 'uefc_settings') {
         // process form code here
@@ -34,7 +37,7 @@ function uefc_options() {
         if ($uefc_apikey) {
             $data = _uefc_api_call('users/me', [], $uefc_apikey);
             if (property_exists($data, 'message')) {
-                ?><div class="error">The Access Token you supplied is not valid. It was not saved.</div><?php
+                ?><div class="notice notice-error settings-error"><p><strong>The Access Token you supplied is not valid. It was not saved.</strong></p></div><?php
             } else {
                 update_option('uefc_apikey', $uefc_apikey);
                 ?><div class="updated"><p><strong>Access Token successfully updated.</div><?php
@@ -42,16 +45,13 @@ function uefc_options() {
         }
 
     }
-    ?>
-<h3>Upcoming Events for Calendly Settings</h3>
-    <?php
     if (get_option("uefc_apikey")) {
         $data = _uefc_api_call('users/me');
         if (property_exists($data, 'message')) {
-            ?><div class="error">Your current Access Token is not valid.</div><?php
+            ?><div class="notice notice-error settings-error"><p><strong>Your current Access Token is not valid.</strong></p></div><?php
         } else {
-            ?><div class="updated">Your current Access Token is valid. You are logged in as:<br>
-            <img src="<?php echo htmlspecialchars($data->resource->avatar_url); ?>" height="40" style="vertical-align: middle;"><span style="font-size: x-large;"><?php echo htmlspecialchars($data->resource->name); ?></span></div><?php
+            ?><div class="updated"><p>Your current Access Token is valid. You are logged in as:<br>
+            <img src="<?php echo htmlspecialchars($data->resource->avatar_url); ?>" height="40" style="vertical-align: middle;"><span style="font-size: x-large;"><?php echo htmlspecialchars($data->resource->name); ?></span></p></div><?php
         }
     }
     ?>
