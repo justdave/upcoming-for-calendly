@@ -1,3 +1,7 @@
+#### 1.1.1 / 2023-01-12
+
+* structured plugin zip file for wordpress.org plugin directory
+
 #### 1.1 / 2023-01-09
 
 * add a 'Settings' link on the Plugins page

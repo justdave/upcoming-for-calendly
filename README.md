@@ -13,4 +13,9 @@ To use it, place the shortcode `[upcoming-for-calendly]` on a post or page
 where you want the list to appear. To restrict it to a specific event type,
 use `[upcoming-for-calendly event="Event Type Name"]`.
 
-Bug reports can be filed at https://github.com/justdave/upcoming-for-calendly/issues
+The plugin currently implements a feature I needed. I am open to adding
+additional features that can be implemented via Calendly's API if there is a
+need for them.
+
+Bug reports and feature requests can be filed at:
+https://github.com/justdave/upcoming-for-calendly/issues
