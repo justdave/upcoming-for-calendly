@@ -26,21 +26,19 @@ function _uefc_api_call( $path, $params = NULL, $apikey = NULL ) {
     if (!$apikey) {
         $apikey = get_option("uefc_apikey");
     }
-    $curl = curl_init($service_url);
-    $curl_headers = [
-        'Authorization: Bearer ' . $apikey,
-        'Content-Type: application/json',
+    $wpget_headers = [
+        'Authorization' => 'Bearer ' . $apikey,
+        'Content-Type'  => 'application/json',
     ];
-    curl_setopt_array($curl, [
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_HTTPHEADER => $curl_headers,
-    ]);
-    $curl_response = curl_exec($curl);
-    if (curl_errno($curl)) {
-        error_log("curl returned " . curl_errno($curl) . " " . curl_error($curl));
+    $wpget_args = [
+        'headers' => $wpget_headers,
+    ];
+    $wpget_response = wp_remote_get($service_url, $wpget_args);
+    $wpget_responsecode = wp_remote_retrieve_response_code($wpget_response);
+    if ($wpget_responsecode != '200') {
+        error_log("HTTP GET returned " . $wpget_responsecode . " " . $wpget_response['response']['message']);
     }
-    curl_close($curl);
-    return json_decode($curl_response);
+    return json_decode($wpget_response['body']);
 }
 
 function _uefc_get_event_availability_info( $event_type, $start_time ) {

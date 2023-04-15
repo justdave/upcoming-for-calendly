@@ -1,3 +1,7 @@
+#### 2.0 / unreleased
+
+* Use WP HTTP API instead of the PHP Curl library
+
 #### 1.1.1 / 2023-01-12
 
 * structured plugin zip file for wordpress.org plugin directory
