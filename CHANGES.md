@@ -1,6 +1,8 @@
-#### 2.0 / unreleased
+#### 1.2 / unreleased
 
 * Use WP HTTP API instead of the PHP Curl library
+* Sanitize and escape, and use WP functions for it instead of built-in PHP functions
+* Don't use underscore prefixes on functions that aren't in a class
 
 #### 1.1.1 / 2023-01-12
 

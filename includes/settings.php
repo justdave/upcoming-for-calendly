@@ -41,7 +41,7 @@ function uefc_options() {
         # following API call will have Calendly validate the key for us. We
         # don't write it to the database until they say it's good.
         if ($uefc_apikey) {
-            $data = _uefc_api_call('users/me', [], $uefc_apikey);
+            $data = uefc_api_call('users/me', [], $uefc_apikey);
             if (property_exists($data, 'message')) {
                 ?><div class="notice notice-error settings-error"><p><strong>The Access Token you supplied is not valid. It was not saved.</strong></p></div><?php
             } else {
@@ -52,7 +52,7 @@ function uefc_options() {
 
     }
     if (get_option("uefc_apikey")) {
-        $data = _uefc_api_call('users/me');
+        $data = uefc_api_call('users/me');
         if (property_exists($data, 'message')) {
             ?><div class="notice notice-error settings-error"><p><strong>Your current Access Token is not valid.</strong></p></div><?php
         } else {

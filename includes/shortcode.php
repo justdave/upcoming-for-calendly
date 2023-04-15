@@ -26,11 +26,11 @@ function uefc_shortcode ( $atts = [], $content = null, $tag = '' ) {
 	);
     $curdate = date_create();
     $curdate_string = date_format($curdate, DATE_ISO8601);
-    $user = _uefc_api_call('users/me');
+    $user = uefc_api_call('users/me');
     if (property_exists($user, 'message')) {
         return "[Calendly Access Token is invalid. Please contact the site administrator.]";
     }
-    $data = _uefc_api_call('scheduled_events', [
+    $data = uefc_api_call('scheduled_events', [
         'user' => $user->resource->uri,
         'status' => 'active',
         'min_start_time' => $curdate_string,
@@ -49,7 +49,7 @@ function uefc_shortcode ( $atts = [], $content = null, $tag = '' ) {
         $event_date = date_create($event->start_time);
         $event_date->setTimeZone(wp_timezone());
         $event_date_string = date_format($event_date, 'l, F j, Y - g:i a');
-        $avail_info = _uefc_get_event_availability_info($event->event_type, $event->start_time);
+        $avail_info = uefc_get_event_availability_info($event->event_type, $event->start_time);
         $slots = $avail_info->invitees_remaining;
         $slots_string = 'full';
         if ($slots == 1) {

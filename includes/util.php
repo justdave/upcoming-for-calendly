@@ -18,7 +18,7 @@
  */
 
 
-function _uefc_api_call( $path, $params = NULL, $apikey = NULL ) {
+function uefc_api_call( $path, $params = NULL, $apikey = NULL ) {
     $service_url = 'https://api.calendly.com/' . $path;
     if ($params) {
         $service_url .= "?" . http_build_query($params);
@@ -41,8 +41,8 @@ function _uefc_api_call( $path, $params = NULL, $apikey = NULL ) {
     return json_decode($wpget_response['body']);
 }
 
-function _uefc_get_event_availability_info( $event_type, $start_time ) {
-    $data = _uefc_api_call('event_type_available_times', [
+function uefc_get_event_availability_info( $event_type, $start_time ) {
+    $data = uefc_api_call('event_type_available_times', [
         'event_type' => $event_type,
         'start_time' => $start_time,
         'end_time'   => $start_time,
