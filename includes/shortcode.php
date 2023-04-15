@@ -58,10 +58,10 @@ function uefc_shortcode ( $atts = [], $content = null, $tag = '' ) {
             $slots_string = $slots . ' slots remaining';
         }
         $output .= '<li class="uefc_event">' .
-            '<a href="' . $avail_info->scheduling_url . '" target="_blank">' .
-            htmlspecialchars($event_date_string) .
+            '<a href="' . esc_url($avail_info->scheduling_url) . '" target="_blank">' .
+            esc_html($event_date_string) .
             '</a>' .
-            ' (' . htmlspecialchars($slots_string) . ')' .
+            ' (' . esc_html($slots_string) . ')' .
             '</li>';
     }
     $output .= '</ol></div>';

@@ -33,7 +33,13 @@ function uefc_options() {
     if( isset($_POST[ $hidden_field_name ]) && $_POST[ $hidden_field_name ] == 'uefc_settings') {
         // process form code here
 
-        $uefc_apikey = trim($_POST['uefc_apikey']);
+        # This is coming out of a textarea field, but we only used that for
+        # word wrapping purposes since it's a LONG string. It shouldn't have
+        # any spaces or linefeeds in it, so we'll sanitize it as a text field.
+        $uefc_apikey = trim(sanitize_text_field($_POST['uefc_apikey']));
+        # Aside from the above, the api key could be pretty much anything. The
+        # following API call will have Calendly validate the key for us. We
+        # don't write it to the database until they say it's good.
         if ($uefc_apikey) {
             $data = _uefc_api_call('users/me', [], $uefc_apikey);
             if (property_exists($data, 'message')) {
@@ -51,12 +57,12 @@ function uefc_options() {
             ?><div class="notice notice-error settings-error"><p><strong>Your current Access Token is not valid.</strong></p></div><?php
         } else {
             ?><div class="updated"><p>Your current Access Token is valid. You are logged in as:<br>
-            <img src="<?php echo htmlspecialchars($data->resource->avatar_url); ?>" height="40" style="vertical-align: middle;"><span style="font-size: x-large;"><?php echo htmlspecialchars($data->resource->name); ?></span></p></div><?php
+            <img src="<?php echo esc_url($data->resource->avatar_url); ?>" height="40" style="vertical-align: middle;"><span style="font-size: x-large;"><?php echo esc_html($data->resource->name); ?></span></p></div><?php
         }
     }
     ?>
 <form name="upcoming-for-calendly-settings" method="post" action="">
-<input type="hidden" name="<?php echo $hidden_field_name; ?>" value="uefc_settings">
+<input type="hidden" name="<?php echo esc_attr($hidden_field_name); ?>" value="uefc_settings">
 <table class="form-table">
 <tbody>
 <tr>
@@ -81,8 +87,8 @@ function uefc_options() {
 add_filter( 'plugin_action_links', 'uefc_settings_link', 10, 2 );
 function uefc_settings_link( $links, $file ) {
     if ($file == 'upcoming-for-calendly/upcoming-for-calendly.php') {
-        $url = esc_url( add_query_arg( 'page', 'uefc-settings', get_admin_url() . 'options-general.php' ) );
-        $settings_link = '<a href="' . $url . '">Settings</a>';
+        $url = add_query_arg( 'page', 'uefc-settings', get_admin_url() . 'options-general.php' );
+        $settings_link = '<a href="' . esc_url($url) . '">Settings</a>';
         array_push( $links, $settings_link );
     }
     return $links;
