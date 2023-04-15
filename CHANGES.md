@@ -1,4 +1,4 @@
-#### 1.2 / unreleased
+#### 1.2 / 2023-04-15
 
 * Use WP HTTP API instead of the PHP Curl library
 * Sanitize and escape, and use WP functions for it instead of built-in PHP functions
