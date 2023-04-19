@@ -8,4 +8,5 @@
 /docker_tag
 /output.log
 /.git*
-/.wordpress.org
+/.wordpress-org
+/.distignore
