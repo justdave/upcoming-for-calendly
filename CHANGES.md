@@ -1,3 +1,7 @@
+#### 1.2.3 / 2023-04-18
+
+* Make the description easier to read on wordpress.org
+
 #### 1.2.2 / 2023-04-18
 
 * Corrections to WP.org deployment process
