@@ -24,7 +24,7 @@ jobs:
       with:
         type: 'zip'
         filename: "upcoming-for-calendly-${{ steps.lasttag.outputs.tag }}.zip"
-        exclusions: '*nondist *DOCKER_ENV *docker_tag *output.log *.git* *.wordpress.org'
+        exclusions: '*nondist *DOCKER_ENV *docker_tag *output.log *.git* *.distignore *.wordpress-org'
         directory: '..'
         path: 'upcoming-for-calendly'
     - name: Post to GitHub Release
