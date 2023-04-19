@@ -14,6 +14,13 @@ jobs:
       id: lasttag
     - name: Generate wordpress.org assets
       run: /bin/bash ${PWD}/.github/bin/make-readmetxt.sh
+    - name: Post to WordPress.org Plugin Directory
+      uses: 10up/action-wordpress-plugin-deploy@stable
+      with:
+        generate-zip: true
+      env:
+        SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+        SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
     - name: Create Zip file
       uses: thedoctor0/zip-release@master
       with:

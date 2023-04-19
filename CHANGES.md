@@ -1,3 +1,7 @@
+#### 1.2.1 / 2023-04-18
+
+* Autodeploy to WordPress Plugin Directory on new release
+
 #### 1.2 / 2023-04-15
 
 * Use WP HTTP API instead of the PHP Curl library
