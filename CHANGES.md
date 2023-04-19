@@ -1,3 +1,7 @@
+#### 1.2.2 / 2023-04-18
+
+* Corrections to WP.org deployment process
+
 #### 1.2.1 / 2023-04-18
 
 * Autodeploy to WordPress Plugin Directory on new release
