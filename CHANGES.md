@@ -1,3 +1,7 @@
+#### 1.2.4 / 2025-04-21
+
+* Update compatibility to show it has been tested and still works with current WordPress
+
 #### 1.2.3 / 2023-04-18
 
 * Make the description easier to read on wordpress.org
