@@ -28,7 +28,7 @@ function uefc_shortcode ( $atts = [], $content = null, $tag = '' ) {
     $curdate_string = date_format($curdate, DATE_ISO8601);
     $user = uefc_api_call('users/me');
     if (property_exists($user, 'message')) {
-        return '[' . esc_html__( 'Calendly Access Token is invalid. Please contact the site administrator.' ) . ']';
+        return '[' . esc_html__( 'Calendly Access Token is invalid. Please contact the site administrator.', 'upcoming-for-calendly' ) . ']';
     }
     $data = uefc_api_call('scheduled_events', [
         'user' => $user->resource->uri,
