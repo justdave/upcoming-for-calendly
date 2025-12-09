@@ -10,6 +10,8 @@
  * Author: David D. Miller
  * Author URI: https://github.com/justdave
  * Author Email: github@justdave.net
+ * License: GPL-2.0-or-later
+ * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * GitHub Plugin URI: https://github.com/justdave/upcoming-for-calendly
  * Primary Branch: main
  * Release Asset: true
