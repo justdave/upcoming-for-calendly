@@ -31,6 +31,9 @@ function uefc_options() {
     <?php
     $hidden_field_name = 'uefc_hidden';
     if( isset($_POST[ $hidden_field_name ]) && $_POST[ $hidden_field_name ] == 'uefc_settings') {
+        // Verify intent to prevent CSRF on settings updates.
+        check_admin_referer('uefc_settings_action', 'uefc_settings_nonce');
+
         // process form code here
 
         # This is coming out of a textarea field, but we only used that for
@@ -63,6 +66,7 @@ function uefc_options() {
     ?>
 <form name="upcoming-for-calendly-settings" method="post" action="">
 <input type="hidden" name="<?php echo esc_attr($hidden_field_name); ?>" value="uefc_settings">
+<?php wp_nonce_field('uefc_settings_action', 'uefc_settings_nonce'); ?>
 <table class="form-table">
 <tbody>
 <tr>
