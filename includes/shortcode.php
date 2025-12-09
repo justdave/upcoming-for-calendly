@@ -28,7 +28,7 @@ function uefc_shortcode ( $atts = [], $content = null, $tag = '' ) {
     $curdate_string = date_format($curdate, DATE_ISO8601);
     $user = uefc_api_call('users/me');
     if (property_exists($user, 'message')) {
-        return "[Calendly Access Token is invalid. Please contact the site administrator.]";
+        return '[' . esc_html__( 'Calendly Access Token is invalid. Please contact the site administrator.' ) . ']';
     }
     $data = uefc_api_call('scheduled_events', [
         'user' => $user->resource->uri,
@@ -38,7 +38,7 @@ function uefc_shortcode ( $atts = [], $content = null, $tag = '' ) {
     $event_list = [];
     $output = '<div class="uefc_event_list"><ul>';
     foreach ($data->collection as $event) {
-        if (($attr['event'] === '') || ($event->name == $attr['event'])) {
+        if (($attr['event'] === '') || ($event->name === $attr['event'])) {
             $event_list[] = $event;
         }
     }
