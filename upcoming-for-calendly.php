@@ -6,7 +6,7 @@
  * Version: 1.2.5
  * Requires PHP: 7.2
  * Requires at least: 5.8
- * Tested up to: 6.8
+ * Tested up to: 6.9
  * Author: David D. Miller
  * Author URI: https://github.com/justdave
  * Author Email: github@justdave.net
