@@ -1,3 +1,8 @@
+#### 1.2.6 / 2025-12-09
+
+* properly remove some IDE droppings from the generated SVN commit
+  to wordpress.org
+
 #### 1.2.5 / 2025-12-09
 
 * Security fix for CVE-2025-14160: Add nonce verification on the
