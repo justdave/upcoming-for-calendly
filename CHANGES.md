@@ -3,6 +3,7 @@
 * Security fix for CVE-2025-14160: Add nonce verification on the
   settings form to prevent CSRF when updating the Calendly Access
   Token
+* Lots of code cleanup
 
 #### 1.2.4 / 2025-04-21
 

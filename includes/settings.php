@@ -40,7 +40,7 @@ function uefc_options() {
         # This is coming out of a textarea field, but we only used that for
         # word wrapping purposes since it's a LONG string. It shouldn't have
         # any spaces or linefeeds in it, so we'll sanitize it as a text field.
-        $uefc_apikey = trim(sanitize_text_field($_POST['uefc_apikey']));
+        $uefc_apikey = isset($_POST['uefc_apikey']) ? trim(sanitize_text_field(wp_unslash($_POST['uefc_apikey']))) : '';
         # Aside from the above, the api key could be pretty much anything. The
         # following API call will have Calendly validate the key for us. We
         # don't write it to the database until they say it's good.
