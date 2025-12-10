@@ -35,9 +35,9 @@ function uefc_api_call( $path, $params = NULL, $apikey = NULL ) {
     ];
     $wpget_response = wp_remote_get($service_url, $wpget_args);
     $wpget_responsecode = wp_remote_retrieve_response_code($wpget_response);
-    if ($wpget_responsecode != '200') {
-        error_log("HTTP GET returned " . $wpget_responsecode . " " . $wpget_response['response']['message']);
-    }
+    // if ($wpget_responsecode != '200') {
+    //     error_log("HTTP GET returned " . $wpget_responsecode . " " . $wpget_response['response']['message']);
+    // }
     return json_decode($wpget_response['body']);
 }
 
