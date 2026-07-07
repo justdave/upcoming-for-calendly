@@ -1,4 +1,4 @@
-#### unreleased changes
+#### 1.2.7 / 2026-07-07
 
 * Tested with WordPress 7.0
 * Reassigned copyright to Justdave IT Consulting LLC, which is still me, it's just the business I own.
