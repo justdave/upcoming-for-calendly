@@ -7,8 +7,8 @@
  * Requires PHP: 7.2
  * Requires at least: 5.8
  * Tested up to: 6.9
- * Author: David D. Miller
- * Author URI: https://github.com/justdave
+ * Author: Justdave IT Consulting LLC
+ * Author URI: https://justdaveitconsulting.com
  * Author Email: github@justdave.net
  * License: GPL-2.0-or-later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -18,7 +18,7 @@
  * */
 
 /*
- * Copyright (C) 2023 David D. Miller
+ * Copyright (C) 2023 Justdave IT Consulting LLC
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License

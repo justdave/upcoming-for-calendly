@@ -1,3 +1,8 @@
+#### unreleased changes
+
+* Tested with WordPress 7.0
+* Reassigned copyright to Justdave IT Consulting LLC, which is still me, it's just the business I own.
+
 #### 1.2.6 / 2025-12-09
 
 * properly remove some IDE droppings from the generated SVN commit
