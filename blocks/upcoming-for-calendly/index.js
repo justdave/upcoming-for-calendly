@@ -69,6 +69,7 @@
 				// Check if we have a cached result.
 				if ( renderCacheRef.current[ cacheKey ] ) {
 					setRenderedHtml( renderCacheRef.current[ cacheKey ] );
+					setIsRendering( false );
 					return;
 				}
 
@@ -83,14 +84,22 @@
 					},
 				} )
 					.then( function ( response ) {
+						console.log( 'Render response:', response );
 						if ( isMounted ) {
-							renderCacheRef.current[ cacheKey ] = response.html;
-							setRenderedHtml( response.html );
+							if ( response && response.html ) {
+								renderCacheRef.current[ cacheKey ] = response.html;
+								setRenderedHtml( response.html );
+							} else {
+								console.error( 'Unexpected response format:', response );
+								setRenderedHtml( 'Error rendering preview' );
+							}
 							setIsRendering( false );
 						}
 					} )
-					.catch( function () {
+					.catch( function ( error ) {
+						console.error( 'Error rendering block:', error );
 						if ( isMounted ) {
+							setRenderedHtml( 'Error rendering preview' );
 							setIsRendering( false );
 						}
 					} );
@@ -156,13 +165,15 @@
 				el(
 					'div',
 					Object.assign( {}, blockProps, { key: 'preview' } ),
-					isRendering && el( Notice, {
-						status: 'info',
-						isDismissible: false,
-					}, __( 'Rendering preview…', 'upcoming-for-calendly' ) ),
-					! isRendering && renderedHtml && el( 'div', {
-						dangerouslySetInnerHTML: { __html: renderedHtml },
-					} )
+					[
+						isRendering && el( Notice, {
+							status: 'info',
+							isDismissible: false,
+						}, __( 'Rendering preview…', 'upcoming-for-calendly' ) ),
+						! isRendering && renderedHtml && el( 'div', {
+							dangerouslySetInnerHTML: { __html: renderedHtml },
+						} )
+					]
 				),
 			];
 		},
