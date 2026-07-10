@@ -3,8 +3,8 @@
  * Plugin Name: Upcoming for Calendly
  * Plugin URI: https://github.com/justdave/upcoming-for-calendly
  * Description: Upcoming Events Registration List for Calendly
- * Version: 1.2.7
- * Requires PHP: 7.2
+ * Version: 2.0-dev
+ * Requires PHP: 8.0
  * Requires at least: 5.8
  * Tested up to: 7.0
  * Author: Justdave IT Consulting LLC
