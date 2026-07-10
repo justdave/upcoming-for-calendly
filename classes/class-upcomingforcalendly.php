@@ -177,19 +177,31 @@ class UpcomingForCalendly {
 			$event_date->setTimeZone( wp_timezone() );
 			$event_date_string = date_format( $event_date, 'l, F j, Y - g:i a' );
 			$avail_info        = $this->get_event_availability_info( $event->event_type, $event->start_time );
-			$slots             = $avail_info->invitees_remaining;
-			$slots_string      = 'full';
-			if ( 1 === $slots ) {
-				$slots_string = $slots . ' slot remaining';
-			} elseif ( $slots > 1 ) {
-				$slots_string = $slots . ' slots remaining';
+			$slots_string      = 'availability unavailable';
+			if ( $avail_info && property_exists( $avail_info, 'invitees_remaining' ) ) {
+				$slots = (int) $avail_info->invitees_remaining;
+				if ( 1 === $slots ) {
+					$slots_string = $slots . ' slot remaining';
+				} elseif ( $slots > 1 ) {
+					$slots_string = $slots . ' slots remaining';
+				} else {
+					$slots_string = 'full';
+				}
 			}
-			$output .= '<li class="uefc_event">' .
-				'<a href="' . esc_url( $avail_info->scheduling_url ) . '" target="_blank">' .
-				esc_html( $event_date_string ) .
-				'</a>' .
-				' (' . esc_html( $slots_string ) . ')' .
-				'</li>';
+
+			if ( $avail_info && property_exists( $avail_info, 'scheduling_url' ) ) {
+				$output .= '<li class="uefc_event">' .
+					'<a href="' . esc_url( $avail_info->scheduling_url ) . '" target="_blank">' .
+					esc_html( $event_date_string ) .
+					'</a>' .
+					' (' . esc_html( $slots_string ) . ')' .
+					'</li>';
+			} else {
+				$output .= '<li class="uefc_event">' .
+					esc_html( $event_date_string ) .
+					' (' . esc_html( $slots_string ) . ')' .
+					'</li>';
+			}
 		}
 		$output .= '</ol></div>';
 		return $output;
@@ -232,14 +244,33 @@ class UpcomingForCalendly {
 	 * @return mixed
 	 */
 	private function get_event_availability_info( $event_type, $start_time ) {
+		$end_time = date_create( $start_time );
+		if ( ! $end_time ) {
+			return null;
+		}
+
+		// Query a non-zero range to avoid empty results on exact boundary matching.
+		$end_time->modify( '+1 minute' );
 		$data = $this->api_call(
 			'event_type_available_times',
 			array(
 				'event_type' => $event_type,
 				'start_time' => $start_time,
-				'end_time'   => $start_time,
+				'end_time'   => date_format( $end_time, DATE_ATOM ),
 			)
 		);
+
+		if ( ! property_exists( $data, 'collection' ) || ! is_array( $data->collection ) || empty( $data->collection ) ) {
+			return null;
+		}
+
+		$start_timestamp = strtotime( $start_time );
+		foreach ( $data->collection as $slot ) {
+			if ( property_exists( $slot, 'start_time' ) && strtotime( $slot->start_time ) === $start_timestamp ) {
+				return $slot;
+			}
+		}
+
 		return $data->collection[0];
 	}
 }

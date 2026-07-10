@@ -1,3 +1,8 @@
+#### unreleased changes
+
+* Lots of code reoganization under the hood to make future development easier
+* Fixes a bug where a recent API change caused us to fail to load event availability and list all sessions as full even if they still had open slots.
+
 #### 1.2.7 / 2026-07-07
 
 * Tested with WordPress 7.0
