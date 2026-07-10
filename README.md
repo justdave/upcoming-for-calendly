@@ -8,6 +8,8 @@ To use it, place the shortcode `[upcoming-for-calendly]` on a post or page where
 
 Calendly has a per-event setting in their UI to hide the available spots on an event, but they don't expose it in the API so the plugin has no way to tell if you have it set. If you want to hide the remaining spot counts, you can add `show_spots="false"` to the shortcode to hide them. For example: `[upcoming-for-calendly show_spots="false"]`.
 
+If you only want booking links to be clickable for logged-in users, add `members_only_links="true"` to the shortcode. Logged-out visitors will still see the event date/time list, but as plain text with no booking URL. For example: `[upcoming-for-calendly members_only_links="true"]`.
+
 The plugin currently implements a feature I needed. I am open to adding additional features that can be implemented via Calendly's API if there is a need for them.
 
 Bug reports and feature requests can be filed at the [GitHub repository](https://github.com/justdave/upcoming-for-calendly/issues).

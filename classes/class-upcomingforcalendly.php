@@ -139,6 +139,8 @@ class UpcomingForCalendly {
 <p class="submit"><input id="uefc_invalidate_cache" class="button" type="submit" value="<?php esc_attr_e( 'Clear API Cache', 'upcoming-for-calendly' ); ?>" name="uefc_invalidate_cache"></p>
 </form>
 <p><?php esc_html_e( 'To place a list of your upcoming events that have already been scheduled into a post or page, use the shortcode', 'upcoming-for-calendly' ); ?> <code>[upcoming-for-calendly]</code>. <?php esc_html_e( 'To restrict it to a specific event type, pass the title of the event (must be an exact match) like so:', 'upcoming-for-calendly' ); ?> <code>[upcoming-for-calendly event="Event Name"]</code>.</p>
+<p><?php esc_html_e( 'If you do not want to show remaining spot counts, add', 'upcoming-for-calendly' ); ?> <code>show_spots="false"</code> <?php esc_html_e( 'to your shortcode.', 'upcoming-for-calendly' ); ?></p>
+<p><?php esc_html_e( 'If you only want logged-in members to get booking links, add', 'upcoming-for-calendly' ); ?> <code>members_only_links="true"</code> <?php esc_html_e( 'to your shortcode. Logged-out visitors will still see event dates, but they will not be clickable.', 'upcoming-for-calendly' ); ?></p>
 		<?php
 		echo '</div>';
 	}
@@ -170,23 +172,28 @@ class UpcomingForCalendly {
 	 * @return string
 	 */
 	public function shortcode( $atts = array(), $content = null, $tag = '' ) {
-		$atts           = array_change_key_case( (array) $atts, CASE_LOWER );
-		$attr           = shortcode_atts(
+		$atts = array_change_key_case( (array) $atts, CASE_LOWER );
+		$attr = shortcode_atts(
 			array(
-				'event'      => '',
-				'show_spots' => 'true',
+				'event'              => '',
+				'show_spots'         => 'true',
+				'members_only_links' => 'false',
 			),
 			$atts,
 			$tag
 		);
-		$show_spots     = wp_validate_boolean( $attr['show_spots'] );
+
+		$show_spots         = wp_validate_boolean( $attr['show_spots'] );
+		$members_only_links = wp_validate_boolean( $attr['members_only_links'] );
+
 		$curdate        = date_create();
 		$curdate_string = date_format( $curdate, DATE_ISO8601 );
 		$user           = $this->api_call( 'users/me' );
 		if ( property_exists( $user, 'message' ) ) {
 			return '[' . esc_html__( 'Calendly Access Token is invalid. Please contact the site administrator.', 'upcoming-for-calendly' ) . ']';
 		}
-		$data       = $this->api_call(
+
+		$data = $this->api_call(
 			'scheduled_events',
 			array(
 				'user'           => $user->resource->uri,
@@ -194,6 +201,7 @@ class UpcomingForCalendly {
 				'min_start_time' => $curdate_string,
 			)
 		);
+
 		$event_list = array();
 		$output     = '<div class="uefc_event_list"><ul>';
 		foreach ( $data->collection as $event ) {
@@ -226,7 +234,9 @@ class UpcomingForCalendly {
 				$spots_html = ' (' . esc_html( $slots_string ) . ')';
 			}
 
-			if ( $avail_info && property_exists( $avail_info, 'scheduling_url' ) ) {
+			$show_booking_link = ( ! $members_only_links ) || is_user_logged_in();
+
+			if ( $show_booking_link && $avail_info && property_exists( $avail_info, 'scheduling_url' ) ) {
 				$output .= '<li class="uefc_event">' .
 					'<a href="' . esc_url( $avail_info->scheduling_url ) . '" target="_blank">' .
 					esc_html( $event_date_string ) .
