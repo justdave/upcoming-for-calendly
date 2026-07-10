@@ -2,6 +2,7 @@
 
 * Lots of code reoganization under the hood to make future development easier
 * Fixes a bug where a recent API change caused us to fail to load event availability and list all sessions as full even if they still had open slots.
+* Cache Calendly API lookup results for up to 5 minutes to reduce API request volume on busy pages. There's a button on the settings page in case you need to clear it sooner.
 
 #### 1.2.7 / 2026-07-07
 
