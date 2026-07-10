@@ -43,7 +43,7 @@ function uefc_options() {
 <h1><?php echo esc_html__( 'Upcoming Events for Calendly Settings', 'upcoming-for-calendly' ); ?></h1>
 	<?php
 	$hidden_field_name = 'uefc_hidden';
-	if ( isset( $_POST[ $hidden_field_name ] ) && $_POST[ $hidden_field_name ] == 'uefc_settings' ) {
+	if ( isset( $_POST[ $hidden_field_name ] ) && 'uefc_settings' === $_POST[ $hidden_field_name ] ) {
 		// Verify intent to prevent CSRF on settings updates.
 		check_admin_referer( 'uefc_settings_action', 'uefc_settings_nonce' );
 

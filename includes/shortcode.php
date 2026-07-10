@@ -55,11 +55,11 @@ function uefc_shortcode( $atts = array(), $content = null, $tag = '' ) {
 	$event_list = array();
 	$output     = '<div class="uefc_event_list"><ul>';
 	foreach ( $data->collection as $event ) {
-		if ( ( $attr['event'] === '' ) || ( $event->name === $attr['event'] ) ) {
+		if ( ( '' === $attr['event'] ) || ( $event->name === $attr['event'] ) ) {
 			$event_list[] = $event;
 		}
 	}
-	if ( count( $event_list ) == 0 ) {
+	if ( 0 === count( $event_list ) ) {
 		$output .= '<li class="uefc_event">No events currently scheduled.</li>';
 	}
 	foreach ( $event_list as $event ) {
@@ -69,7 +69,7 @@ function uefc_shortcode( $atts = array(), $content = null, $tag = '' ) {
 		$avail_info        = uefc_get_event_availability_info( $event->event_type, $event->start_time );
 		$slots             = $avail_info->invitees_remaining;
 		$slots_string      = 'full';
-		if ( $slots == 1 ) {
+		if ( 1 === $slots ) {
 			$slots_string = $slots . ' slot remaining';
 		} elseif ( $slots > 1 ) {
 			$slots_string = $slots . ' slots remaining';
