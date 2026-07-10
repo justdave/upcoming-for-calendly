@@ -1,12 +1,14 @@
 #### unreleased changes
 
 * New features:
-  * Calendly API lookup results are now cached for up to 5 minutes to reduce API request volume on busy pages. There's a button on the settings page in case you need to clear it sooner.
+  * There is now a Gutenberg block in the editor as an alternate way to add the events to your page. This gives you a dropdown and switches to use instead of needing to remember the event names and shortcode parameters. See the help at the bottom of the settings page if you need help finding it.
   * Since Calendly doesn't expose the "Display remaining spots on booking page" setting via the API, you can now add `show_spots="false"` to the shortcode to hide the available spots.
+  * You can now add `members_only_links="true"` to the shortcode to only show registration links to logged-in members. Logged-out visitors will still see the event dates, but they will not be clickable. 
 * Bug fixes:
   * A recent API change caused us to fail to load event availability and list all sessions as full even if they still had open spots. We now correctly show available spots again.
 * Under the hood:
   * Lots of code reoganization to make future development easier
+  * Calendly API lookup results are now cached for up to 5 minutes to reduce API request volume on busy pages. There's a button on the settings page in case you need to clear it sooner.
 
 #### 1.2.7 / 2026-07-07
 
