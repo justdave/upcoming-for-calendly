@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * Plugin Name: Upcoming for Calendly
  * Plugin URI: https://github.com/justdave/upcoming-for-calendly
  * Description: Upcoming Events Registration List for Calendly
@@ -15,7 +15,9 @@
  * GitHub Plugin URI: https://github.com/justdave/upcoming-for-calendly
  * Primary Branch: main
  * Release Asset: true
- * */
+ *
+ * @package Upcoming_For_Calendly
+ */
 
 /*
  * Copyright (C) 2023 Justdave IT Consulting LLC

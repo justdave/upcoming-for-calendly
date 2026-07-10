@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * Copyright (C) 2023 Justdave IT Consulting LLC
  *
  * This program is free software; you can redistribute it and/or
@@ -15,13 +15,25 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ *
+ * @package Upcoming_For_Calendly
  */
 
 add_action( 'admin_menu', 'uefc_settings_menu' );
+/**
+ * Register the plugin settings page under the Settings menu.
+ *
+ * @return void
+ */
 function uefc_settings_menu() {
 	add_options_page( 'Upcoming Events for Calendly', 'Upcoming Events for Calendly', 'manage_options', 'uefc-settings', 'uefc_options' );
 }
 
+/**
+ * Render and process the plugin settings page.
+ *
+ * @return void
+ */
 function uefc_options() {
 	if ( ! current_user_can( 'manage_options' ) ) {
 		wp_die( esc_html__( 'You do not have sufficient permissions to access this page.', 'upcoming-for-calendly' ) );
@@ -35,7 +47,7 @@ function uefc_options() {
 		// Verify intent to prevent CSRF on settings updates.
 		check_admin_referer( 'uefc_settings_action', 'uefc_settings_nonce' );
 
-		// process form code here
+		// Process form code here.
 
 		// This is coming out of a textarea field, but we only used that for
 		// word wrapping purposes since it's a LONG string. It shouldn't have
@@ -101,6 +113,14 @@ function uefc_options() {
 }
 
 add_filter( 'plugin_action_links', 'uefc_settings_link', 10, 2 );
+/**
+ * Add a Settings link on the plugins list row.
+ *
+ * @param array  $links Existing action links.
+ * @param string $file  Plugin file path relative to plugins directory.
+ *
+ * @return array
+ */
 function uefc_settings_link( $links, $file ) {
 	if ( 'upcoming-for-calendly/upcoming-for-calendly.php' === $file ) {
 		$url           = add_query_arg( 'page', 'uefc-settings', get_admin_url() . 'options-general.php' );

@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * Copyright (C) 2023 Justdave IT Consulting LLC
  *
  * This program is free software; you can redistribute it and/or
@@ -15,9 +15,20 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ *
+ * @package Upcoming_For_Calendly
  */
 
 add_shortcode( 'upcoming-for-calendly', 'uefc_shortcode' );
+/**
+ * Render the upcoming events shortcode output.
+ *
+ * @param array       $atts    Shortcode attributes.
+ * @param string|null $content Shortcode enclosed content.
+ * @param string      $tag     Shortcode tag name.
+ *
+ * @return string
+ */
 function uefc_shortcode( $atts = array(), $content = null, $tag = '' ) {
 	$atts           = array_change_key_case( (array) $atts, CASE_LOWER );
 	$attr           = shortcode_atts(

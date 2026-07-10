@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * Copyright (C) 2023 Justdave IT Consulting LLC
  *
  * This program is free software; you can redistribute it and/or
@@ -15,9 +15,19 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ *
+ * @package Upcoming_For_Calendly
  */
 
-
+/**
+ * Perform an authenticated GET request to the Calendly API.
+ *
+ * @param string      $path   API path relative to the Calendly base URL.
+ * @param array|null  $params Optional query string parameters.
+ * @param string|null $apikey Optional API key override.
+ *
+ * @return mixed
+ */
 function uefc_api_call( $path, $params = null, $apikey = null ) {
 	$service_url = 'https://api.calendly.com/' . $path;
 	if ( $params ) {
@@ -35,12 +45,18 @@ function uefc_api_call( $path, $params = null, $apikey = null ) {
 	);
 	$wpget_response     = wp_remote_get( $service_url, $wpget_args );
 	$wpget_responsecode = wp_remote_retrieve_response_code( $wpget_response );
-	// if ($wpget_responsecode != '200') {
-	// error_log("HTTP GET returned " . $wpget_responsecode . " " . $wpget_response['response']['message']);
-	// }
+	// Intentionally ignore non-200 diagnostics here; callers handle invalid responses.
 	return json_decode( $wpget_response['body'] );
 }
 
+/**
+ * Retrieve availability data for a specific event slot.
+ *
+ * @param string $event_type Event type URI.
+ * @param string $start_time Event start time in ISO 8601 format.
+ *
+ * @return mixed
+ */
 function uefc_get_event_availability_info( $event_type, $start_time ) {
 	$data = uefc_api_call(
 		'event_type_available_times',
