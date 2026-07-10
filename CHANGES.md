@@ -1,8 +1,6 @@
-#### unreleased changes
+#### Unreleased changes
 
-* New features:
-* Bug fixes:
-* Under the hood:
+* The changelog was accidentally removed from the distribution. It has been restored.
 
 #### 2.0 / 2026-07-10
 

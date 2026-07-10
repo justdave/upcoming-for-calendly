@@ -9,7 +9,6 @@
 /.markdownlint.json
 /.vscode
 /.wordpress-org
-/CHANGES.md
 /DOCKER_ENV
 /composer.json
 /composer.lock
