@@ -1,8 +1,12 @@
 #### unreleased changes
 
-* Lots of code reoganization under the hood to make future development easier
-* Fixes a bug where a recent API change caused us to fail to load event availability and list all sessions as full even if they still had open slots.
-* Cache Calendly API lookup results for up to 5 minutes to reduce API request volume on busy pages. There's a button on the settings page in case you need to clear it sooner.
+* New features:
+  * Calendly API lookup results are now cached for up to 5 minutes to reduce API request volume on busy pages. There's a button on the settings page in case you need to clear it sooner.
+  * Since Calendly doesn't expose the "Display remaining spots on booking page" setting via the API, you can now add `show_spots="false"` to the shortcode to hide the available spots.
+* Bug fixes:
+  * A recent API change caused us to fail to load event availability and list all sessions as full even if they still had open spots. We now correctly show available spots again.
+* Under the hood:
+  * Lots of code reoganization to make future development easier
 
 #### 1.2.7 / 2026-07-07
 

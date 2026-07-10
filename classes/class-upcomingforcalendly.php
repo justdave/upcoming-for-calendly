@@ -173,11 +173,13 @@ class UpcomingForCalendly {
 		$atts           = array_change_key_case( (array) $atts, CASE_LOWER );
 		$attr           = shortcode_atts(
 			array(
-				'event' => '',
+				'event'      => '',
+				'show_spots' => 'true',
 			),
 			$atts,
 			$tag
 		);
+		$show_spots     = wp_validate_boolean( $attr['show_spots'] );
 		$curdate        = date_create();
 		$curdate_string = date_format( $curdate, DATE_ISO8601 );
 		$user           = $this->api_call( 'users/me' );
@@ -207,16 +209,21 @@ class UpcomingForCalendly {
 			$event_date->setTimeZone( wp_timezone() );
 			$event_date_string = date_format( $event_date, 'l, F j, Y - g:i a' );
 			$avail_info        = $this->get_event_availability_info( $event->event_type, $event->start_time );
-			$slots_string      = 'availability unavailable';
-			if ( $avail_info && property_exists( $avail_info, 'invitees_remaining' ) ) {
-				$slots = (int) $avail_info->invitees_remaining;
-				if ( 1 === $slots ) {
-					$slots_string = $slots . ' slot remaining';
-				} elseif ( $slots > 1 ) {
-					$slots_string = $slots . ' slots remaining';
-				} else {
-					$slots_string = 'full';
+			$spots_html        = '';
+			if ( $show_spots ) {
+				$slots_string = 'availability unavailable';
+				if ( $avail_info && property_exists( $avail_info, 'invitees_remaining' ) ) {
+					$slots = (int) $avail_info->invitees_remaining;
+					if ( 1 === $slots ) {
+						$slots_string = $slots . ' spot remaining';
+					} elseif ( $slots > 1 ) {
+						$slots_string = $slots . ' spots remaining';
+					} else {
+						$slots_string = 'full';
+					}
 				}
+
+				$spots_html = ' (' . esc_html( $slots_string ) . ')';
 			}
 
 			if ( $avail_info && property_exists( $avail_info, 'scheduling_url' ) ) {
@@ -224,12 +231,12 @@ class UpcomingForCalendly {
 					'<a href="' . esc_url( $avail_info->scheduling_url ) . '" target="_blank">' .
 					esc_html( $event_date_string ) .
 					'</a>' .
-					' (' . esc_html( $slots_string ) . ')' .
+					$spots_html .
 					'</li>';
 			} else {
 				$output .= '<li class="uefc_event">' .
 					esc_html( $event_date_string ) .
-					' (' . esc_html( $slots_string ) . ')' .
+					$spots_html .
 					'</li>';
 			}
 		}

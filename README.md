@@ -1,10 +1,12 @@
 # Upcoming Events Registration List for Calendly
 
-This WordPress plugin adds a shortcode to list upcoming scheduled events from Calendly using the Calendly API and offers registration links for already-scheduled group events that still have open slots. You can either list all of your scheduled events, or restrict it to a specific event type.
+This WordPress plugin adds a shortcode to list upcoming scheduled events from Calendly using the Calendly API and offers registration links for already-scheduled group events that still have open spots. You can either list all of your scheduled events, or restrict it to a specific event type.
 
 To set it up, you will need to log into Calendly and generate an Access Token.  A link to do so is provided on the settings page. Paste the token into the box on the settings page.
 
 To use it, place the shortcode `[upcoming-for-calendly]` on a post or page where you want the list to appear. To restrict it to a specific event type, use `[upcoming-for-calendly event="Event Type Name"]`.
+
+Calendly has a per-event setting in their UI to hide the available spots on an event, but they don't expose it in the API so the plugin has no way to tell if you have it set. If you want to hide the remaining spot counts, you can add `show_spots="false"` to the shortcode to hide them. For example: `[upcoming-for-calendly show_spots="false"]`.
 
 The plugin currently implements a feature I needed. I am open to adding additional features that can be implemented via Calendly's API if there is a need for them.
 
