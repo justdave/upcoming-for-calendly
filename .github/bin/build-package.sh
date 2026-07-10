@@ -32,10 +32,11 @@ fi
 
 TAG="${1:-}"
 if [ -z "${TAG}" ]; then
-    TAG="$(git describe --tags --abbrev=0 2>/dev/null || true)"
+    # For local/dev builds, prefer the plugin header version.
+    TAG="$(grep -E '^ \* Version:' "${PLUGIN_FILE}" | sed -e 's/.*Version: //' | head -1)"
 fi
 if [ -z "${TAG}" ]; then
-    TAG="$(grep -E '^ \* Version:' "${PLUGIN_FILE}" | sed -e 's/.*Version: //' | head -1)"
+    TAG="$(git describe --tags --abbrev=0 2>/dev/null || true)"
 fi
 if [ -z "${TAG}" ]; then
     echo "Unable to determine package version/tag" >&2
