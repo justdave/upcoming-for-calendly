@@ -3,6 +3,8 @@ on:
     types:
       - published
 name: Build & Release
+permissions:
+  contents: write
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -29,3 +31,58 @@ jobs:
         tag: ${{ steps.lasttag.outputs.tag }}
         artifacts: "../upcoming-for-calendly-${{ steps.lasttag.outputs.tag }}.zip"
         token: ${{ secrets.GITHUB_TOKEN }}
+    - name: Checkout default branch for post-release version bump
+      uses: actions/checkout@v7
+      with:
+        ref: ${{ github.event.repository.default_branch }}
+        fetch-depth: 0
+    - name: Bump to next patch dev and create new unreleased section
+      env:
+        RELEASE_TAG: ${{ github.event.release.tag_name }}
+        DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+      run: |
+        set -euo pipefail
+
+        release_version="${RELEASE_TAG#v}"
+        release_version="${release_version#V}"
+
+        if [[ ! "${release_version}" =~ ^([0-9]+)\.([0-9]+)(\.([0-9]+))?$ ]]; then
+          echo "Release tag '${RELEASE_TAG}' is not numeric semver (expected 1.2.3 or v1.2.3). Skipping post-release bump."
+          exit 0
+        fi
+
+        major="${BASH_REMATCH[1]}"
+        minor="${BASH_REMATCH[2]}"
+        patch="${BASH_REMATCH[4]:-0}"
+        next_patch="$(( patch + 1 ))"
+        next_dev_version="${major}.${minor}.${next_patch}-dev"
+
+        sed -E -i.bak "s/^( \* Version: ).*$/\\1${next_dev_version}/" upcoming-for-calendly.php
+        rm -f upcoming-for-calendly.php.bak
+
+        if ! head -n 1 CHANGES.md | grep -qiE '^#### unreleased changes'; then
+          temp_file="$(mktemp)"
+          {
+            echo "#### unreleased changes"
+            echo
+            echo "* New features:"
+            echo "* Bug fixes:"
+            echo "* Under the hood:"
+            echo
+            cat CHANGES.md
+          } > "${temp_file}"
+          mv "${temp_file}" CHANGES.md
+        fi
+
+        git config user.name "github-actions[bot]"
+        git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+        git add upcoming-for-calendly.php CHANGES.md
+
+        if git diff --cached --quiet; then
+          echo "No post-release version/changelog changes detected."
+          exit 0
+        fi
+
+        git commit -m "Post-release: bump version to ${next_dev_version}"
+        git push origin "HEAD:${DEFAULT_BRANCH}"
