@@ -1,4 +1,4 @@
-#### Unreleased changes
+#### 2.0.1 / 2026-07-10
 
 * The changelog was accidentally removed from the distribution. It has been restored.
 
