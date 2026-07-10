@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<ruleset name="Upcoming for Calendly">
+    <description>Project PHPCS rules for WordPress plugin development.</description>
+
+    <arg name="basepath" value="."/>
+    <arg name="colors"/>
+    <arg value="sp"/>
+
+    <file>upcoming-for-calendly.php</file>
+    <file>includes</file>
+
+    <exclude-pattern>*/vendor/*</exclude-pattern>
+    <exclude-pattern>*/node_modules/*</exclude-pattern>
+    <exclude-pattern>*/.wordpress-org/*</exclude-pattern>
+
+    <config name="minimum_wp_version" value="5.8"/>
+    <config name="testVersion" value="7.2-"/>
+
+    <rule ref="WordPress-Core"/>
+    <rule ref="WordPress-Extra"/>
+    <rule ref="WordPress-Docs"/>
+    <rule ref="PHPCompatibilityWP"/>
+
+    <rule ref="WordPress.WP.I18n">
+        <properties>
+            <property name="text_domain" type="array">
+                <element value="upcoming-for-calendly"/>
+            </property>
+        </properties>
+    </rule>
+</ruleset>

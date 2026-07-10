@@ -1,0 +1,23 @@
+{
+    "name": "justdave/upcoming-for-calendly",
+    "description": "Development tooling for Upcoming for Calendly.",
+    "type": "wordpress-plugin",
+    "license": "GPL-2.0-or-later",
+    "require-dev": {
+        "squizlabs/php_codesniffer": "^3.10",
+        "wp-coding-standards/wpcs": "^3.1",
+        "phpcompatibility/phpcompatibility-wp": "^2.1",
+        "dealerdirect/phpcodesniffer-composer-installer": "^1.1",
+        "php-stubs/wordpress-stubs": "^6.8"
+    },
+    "scripts": {
+        "lint": "phpcs",
+        "lint:php": "phpcs",
+        "fix": "phpcbf"
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
+    }
+}
