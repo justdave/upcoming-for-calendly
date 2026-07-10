@@ -25,10 +25,7 @@ if [ ! -e "README.md" ]; then
     echo "Not running in correct directory. pwd=${PWD}" >&2
     exit -1
 fi
-# make assets directory visible
-if [ -d ".wordpress-org" ]; then
-    cp -r .wordpress-org/ assets
-fi
+
 # parse the main plugin file for metadata
 CODEHEADER=`head -20 upcoming-for-calendly.php`
 PLUGINNAME=`echo "$CODEHEADER" | grep -E '^ \* Plugin Name:' | sed -e 's/.*Plugin Name: //'`

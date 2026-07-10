@@ -1,13 +1,20 @@
+# This file lists things that should not be in the final generated ZIP file when building the plugin distribution ZIP.
 # Ignore Mac Finder droppings
 .DS_Store
 # Ignore VIM droppings
 *.swp
-# Other files to not include in final ZIP file
-/nondist
-/DOCKER_ENV
-/docker_tag
-/output.log
-/.git*
+# Other files to not include in final ZIP file or WordPress SVN repo
 /.distignore
+/.git*
 /.markdownlint.json
+/.vscode
 /.wordpress-org
+/CHANGES.md
+/DOCKER_ENV
+/composer.json
+/composer.lock
+/docker_tag
+/nondist
+/output.log
+/phpcs.xml.dist
+/vendor
