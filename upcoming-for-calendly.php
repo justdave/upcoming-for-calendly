@@ -37,8 +37,12 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-// All of the meat is in the includes directory, to keep it organized.
-// Just pull it all in from here.
-require_once 'includes/util.php';
-require_once 'includes/settings.php';
-require_once 'includes/shortcode.php';
+namespace JDITC;
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+require_once __DIR__ . '/classes/class-upcomingforcalendly.php';
+
+new Upcoming_For_Calendly\UpcomingForCalendly();

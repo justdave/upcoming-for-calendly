@@ -7,7 +7,7 @@
     <arg value="sp"/>
 
     <file>upcoming-for-calendly.php</file>
-    <file>includes</file>
+    <file>classes</file>
 
     <exclude-pattern>*/vendor/*</exclude-pattern>
     <exclude-pattern>*/node_modules/*</exclude-pattern>
