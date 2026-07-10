@@ -37,6 +37,6 @@
 
 // All of the meat is in the includes directory, to keep it organized.
 // Just pull it all in from here.
-require_once("includes/util.php");
-require_once("includes/settings.php");
-require_once("includes/shortcode.php");
+require_once 'includes/util.php';
+require_once 'includes/settings.php';
+require_once 'includes/shortcode.php';

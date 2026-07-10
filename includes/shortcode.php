@@ -18,52 +18,58 @@
  */
 
 add_shortcode( 'upcoming-for-calendly', 'uefc_shortcode' );
-function uefc_shortcode ( $atts = [], $content = null, $tag = '' ) {
-    $atts = array_change_key_case( (array) $atts, CASE_LOWER );
-    $attr =  shortcode_atts([
-            'event' => '',
-        ], $atts, $tag
+function uefc_shortcode( $atts = array(), $content = null, $tag = '' ) {
+	$atts           = array_change_key_case( (array) $atts, CASE_LOWER );
+	$attr           = shortcode_atts(
+		array(
+			'event' => '',
+		),
+		$atts,
+		$tag
 	);
-    $curdate = date_create();
-    $curdate_string = date_format($curdate, DATE_ISO8601);
-    $user = uefc_api_call('users/me');
-    if (property_exists($user, 'message')) {
-        return '[' . esc_html__( 'Calendly Access Token is invalid. Please contact the site administrator.', 'upcoming-for-calendly' ) . ']';
-    }
-    $data = uefc_api_call('scheduled_events', [
-        'user' => $user->resource->uri,
-        'status' => 'active',
-        'min_start_time' => $curdate_string,
-    ]);
-    $event_list = [];
-    $output = '<div class="uefc_event_list"><ul>';
-    foreach ($data->collection as $event) {
-        if (($attr['event'] === '') || ($event->name === $attr['event'])) {
-            $event_list[] = $event;
-        }
-    }
-    if (count($event_list) == 0) {
-        $output .= '<li class="uefc_event">No events currently scheduled.</li>';
-    }
-    foreach ($event_list as $event) {
-        $event_date = date_create($event->start_time);
-        $event_date->setTimeZone(wp_timezone());
-        $event_date_string = date_format($event_date, 'l, F j, Y - g:i a');
-        $avail_info = uefc_get_event_availability_info($event->event_type, $event->start_time);
-        $slots = $avail_info->invitees_remaining;
-        $slots_string = 'full';
-        if ($slots == 1) {
-            $slots_string = $slots . ' slot remaining';
-        } else if ($slots > 1) {
-            $slots_string = $slots . ' slots remaining';
-        }
-        $output .= '<li class="uefc_event">' .
-            '<a href="' . esc_url($avail_info->scheduling_url) . '" target="_blank">' .
-            esc_html($event_date_string) .
-            '</a>' .
-            ' (' . esc_html($slots_string) . ')' .
-            '</li>';
-    }
-    $output .= '</ol></div>';
-    return $output;
+	$curdate        = date_create();
+	$curdate_string = date_format( $curdate, DATE_ISO8601 );
+	$user           = uefc_api_call( 'users/me' );
+	if ( property_exists( $user, 'message' ) ) {
+		return '[' . esc_html__( 'Calendly Access Token is invalid. Please contact the site administrator.', 'upcoming-for-calendly' ) . ']';
+	}
+	$data       = uefc_api_call(
+		'scheduled_events',
+		array(
+			'user'           => $user->resource->uri,
+			'status'         => 'active',
+			'min_start_time' => $curdate_string,
+		)
+	);
+	$event_list = array();
+	$output     = '<div class="uefc_event_list"><ul>';
+	foreach ( $data->collection as $event ) {
+		if ( ( $attr['event'] === '' ) || ( $event->name === $attr['event'] ) ) {
+			$event_list[] = $event;
+		}
+	}
+	if ( count( $event_list ) == 0 ) {
+		$output .= '<li class="uefc_event">No events currently scheduled.</li>';
+	}
+	foreach ( $event_list as $event ) {
+		$event_date = date_create( $event->start_time );
+		$event_date->setTimeZone( wp_timezone() );
+		$event_date_string = date_format( $event_date, 'l, F j, Y - g:i a' );
+		$avail_info        = uefc_get_event_availability_info( $event->event_type, $event->start_time );
+		$slots             = $avail_info->invitees_remaining;
+		$slots_string      = 'full';
+		if ( $slots == 1 ) {
+			$slots_string = $slots . ' slot remaining';
+		} elseif ( $slots > 1 ) {
+			$slots_string = $slots . ' slots remaining';
+		}
+		$output .= '<li class="uefc_event">' .
+			'<a href="' . esc_url( $avail_info->scheduling_url ) . '" target="_blank">' .
+			esc_html( $event_date_string ) .
+			'</a>' .
+			' (' . esc_html( $slots_string ) . ')' .
+			'</li>';
+	}
+	$output .= '</ol></div>';
+	return $output;
 }

@@ -18,34 +18,37 @@
  */
 
 
-function uefc_api_call( $path, $params = NULL, $apikey = NULL ) {
-    $service_url = 'https://api.calendly.com/' . $path;
-    if ($params) {
-        $service_url .= "?" . http_build_query($params);
-    }
-    if (!$apikey) {
-        $apikey = get_option("uefc_apikey");
-    }
-    $wpget_headers = [
-        'Authorization' => 'Bearer ' . $apikey,
-        'Content-Type'  => 'application/json',
-    ];
-    $wpget_args = [
-        'headers' => $wpget_headers,
-    ];
-    $wpget_response = wp_remote_get($service_url, $wpget_args);
-    $wpget_responsecode = wp_remote_retrieve_response_code($wpget_response);
-    // if ($wpget_responsecode != '200') {
-    //     error_log("HTTP GET returned " . $wpget_responsecode . " " . $wpget_response['response']['message']);
-    // }
-    return json_decode($wpget_response['body']);
+function uefc_api_call( $path, $params = null, $apikey = null ) {
+	$service_url = 'https://api.calendly.com/' . $path;
+	if ( $params ) {
+		$service_url .= '?' . http_build_query( $params );
+	}
+	if ( ! $apikey ) {
+		$apikey = get_option( 'uefc_apikey' );
+	}
+	$wpget_headers      = array(
+		'Authorization' => 'Bearer ' . $apikey,
+		'Content-Type'  => 'application/json',
+	);
+	$wpget_args         = array(
+		'headers' => $wpget_headers,
+	);
+	$wpget_response     = wp_remote_get( $service_url, $wpget_args );
+	$wpget_responsecode = wp_remote_retrieve_response_code( $wpget_response );
+	// if ($wpget_responsecode != '200') {
+	// error_log("HTTP GET returned " . $wpget_responsecode . " " . $wpget_response['response']['message']);
+	// }
+	return json_decode( $wpget_response['body'] );
 }
 
 function uefc_get_event_availability_info( $event_type, $start_time ) {
-    $data = uefc_api_call('event_type_available_times', [
-        'event_type' => $event_type,
-        'start_time' => $start_time,
-        'end_time'   => $start_time,
-    ]);
-    return $data->collection[0];
+	$data = uefc_api_call(
+		'event_type_available_times',
+		array(
+			'event_type' => $event_type,
+			'start_time' => $start_time,
+			'end_time'   => $start_time,
+		)
+	);
+	return $data->collection[0];
 }
