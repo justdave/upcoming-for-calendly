@@ -1,4 +1,4 @@
-#### unreleased changes
+#### 2.0 / 2026-07-10
 
 * New features:
   * There is now a Gutenberg block in the editor as an alternate way to add the events to your page. This gives you a dropdown and switches to use instead of needing to remember the event names and shortcode parameters. See the help at the bottom of the settings page if you need help finding it.
