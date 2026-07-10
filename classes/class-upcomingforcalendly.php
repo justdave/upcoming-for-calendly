@@ -32,6 +32,8 @@ class UpcomingForCalendly {
 		add_action( 'admin_menu', array( $this, 'settings_menu' ) );
 		add_filter( 'plugin_action_links', array( $this, 'settings_link' ), 10, 2 );
 		add_shortcode( 'upcoming-for-calendly', array( $this, 'shortcode' ) );
+		add_action( 'init', array( $this, 'register_block' ) );
+		add_action( 'rest_api_init', array( $this, 'register_rest_routes' ) );
 	}
 
 	/**
@@ -163,6 +165,96 @@ class UpcomingForCalendly {
 	}
 
 	/**
+	 * Register REST API routes.
+	 *
+	 * @return void
+	 */
+	public function register_rest_routes() {
+		register_rest_route(
+			'upcoming-for-calendly/v1',
+			'/event-types',
+			array(
+				'methods'             => 'GET',
+				'callback'            => array( $this, 'rest_get_event_types' ),
+				'permission_callback' => function () {
+					return current_user_can( 'edit_posts' );
+				},
+			)
+		);
+	}
+
+	/**
+	 * REST endpoint to get available event types.
+	 *
+	 * @return \WP_REST_Response
+	 */
+	public function rest_get_event_types() {
+		$user = $this->api_call( 'users/me' );
+		if ( property_exists( $user, 'message' ) ) {
+			return new \WP_REST_Response(
+				array( 'error' => esc_html__( 'Invalid Calendly Access Token', 'upcoming-for-calendly' ) ),
+				401
+			);
+		}
+
+		$data = $this->api_call(
+			'event_types',
+			array( 'user' => $user->resource->uri )
+		);
+
+		if ( ! property_exists( $data, 'collection' ) || ! is_array( $data->collection ) ) {
+			return new \WP_REST_Response( array() );
+		}
+
+		$event_types = array();
+		foreach ( $data->collection as $event_type ) {
+			if ( property_exists( $event_type, 'name' ) ) {
+				$event_types[] = array(
+					'label' => $event_type->name,
+					'value' => $event_type->name,
+				);
+			}
+		}
+
+		usort(
+			$event_types,
+			function ( $a, $b ) {
+				return strcasecmp( $a['label'], $b['label'] );
+			}
+		);
+
+		return new \WP_REST_Response( $event_types );
+	}
+
+	/**
+	 * Register the Gutenberg block type.
+	 *
+	 * @return void
+	 */
+	public function register_block() {
+		register_block_type(
+			plugin_dir_path( __DIR__ ) . 'blocks/upcoming-for-calendly',
+			array(
+				'render_callback' => array( $this, 'render_block' ),
+			)
+		);
+	}
+
+	/**
+	 * Render callback for the Gutenberg block.
+	 *
+	 * @param array $attributes Block attributes.
+	 *
+	 * @return string
+	 */
+	public function render_block( $attributes ) {
+		$event              = isset( $attributes['event'] ) ? (string) $attributes['event'] : '';
+		$show_spots         = isset( $attributes['showSpots'] ) ? (bool) $attributes['showSpots'] : true;
+		$members_only_links = isset( $attributes['membersOnlyLinks'] ) ? (bool) $attributes['membersOnlyLinks'] : false;
+		return $this->render_event_list( $event, $show_spots, $members_only_links );
+	}
+
+	/**
 	 * Render the shortcode output.
 	 *
 	 * @param array       $atts    Shortcode attributes.
@@ -183,9 +275,23 @@ class UpcomingForCalendly {
 			$tag
 		);
 
-		$show_spots         = wp_validate_boolean( $attr['show_spots'] );
-		$members_only_links = wp_validate_boolean( $attr['members_only_links'] );
+		return $this->render_event_list(
+			$attr['event'],
+			wp_validate_boolean( $attr['show_spots'] ),
+			wp_validate_boolean( $attr['members_only_links'] )
+		);
+	}
 
+	/**
+	 * Build the event list HTML output.
+	 *
+	 * @param string $event_filter       Event name to filter by, or empty string for all events.
+	 * @param bool   $show_spots         Whether to display remaining spots.
+	 * @param bool   $members_only_links Whether booking links are restricted to logged-in users.
+	 *
+	 * @return string
+	 */
+	private function render_event_list( $event_filter, $show_spots, $members_only_links ) {
 		$curdate        = date_create();
 		$curdate_string = date_format( $curdate, DATE_ISO8601 );
 		$user           = $this->api_call( 'users/me' );
@@ -205,7 +311,7 @@ class UpcomingForCalendly {
 		$event_list = array();
 		$output     = '<div class="uefc_event_list"><ul>';
 		foreach ( $data->collection as $event ) {
-			if ( ( '' === $attr['event'] ) || ( $event->name === $attr['event'] ) ) {
+			if ( ( '' === $event_filter ) || ( $event->name === $event_filter ) ) {
 				$event_list[] = $event;
 			}
 		}

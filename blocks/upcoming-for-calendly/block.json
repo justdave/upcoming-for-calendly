@@ -1,0 +1,30 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "jditc/upcoming-for-calendly",
+	"version": "1.0.0",
+	"title": "Upcoming for Calendly",
+	"category": "embed",
+	"icon": "calendar",
+	"description": "Display a list of upcoming scheduled Calendly events.",
+	"keywords": [ "calendly", "events", "calendar" ],
+	"textdomain": "upcoming-for-calendly",
+	"attributes": {
+		"event": {
+			"type": "string",
+			"default": ""
+		},
+		"showSpots": {
+			"type": "boolean",
+			"default": true
+		},
+		"membersOnlyLinks": {
+			"type": "boolean",
+			"default": false
+		}
+	},
+	"supports": {
+		"html": false
+	},
+	"editorScript": "file:./index.js"
+}
