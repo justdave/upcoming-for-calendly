@@ -2,6 +2,10 @@
 .DS_Store
 # Ignore VIM droppings
 *.swp
-# Ignore WordPress.org generated files
-/readme.txt
+# Generated release artifacts
 /assets
+/readme.txt
+# Development environment files that don't need to be in the repository
+/.vscode
+/vendor
+/composer.lock
