@@ -1,4 +1,4 @@
-#### unreleased changes
+#### 2.0.2 / 2026-07-10
 
 * Performance improvements to editor block rendering.
 
