@@ -3,27 +3,37 @@
 	var __                = i18n.__;
 	var useState          = element.useState;
 	var useEffect         = element.useEffect;
+	var useRef            = element.useRef;
 	var InspectorControls = blockEditor.InspectorControls;
 	var useBlockProps     = blockEditor.useBlockProps;
 	var PanelBody         = components.PanelBody;
 	var SelectControl     = components.SelectControl;
 	var ToggleControl     = components.ToggleControl;
 	var Notice            = components.Notice;
-	var ServerSideRender  = window.wp.serverSideRender;
+
+	// Cache for rendered block HTML based on attributes.
+	var renderCache = {};
 
 	blocks.registerBlockType( 'jditc/upcoming-for-calendly', {
 		edit: function ( props ) {
-			var attributes       = props.attributes;
-			var setAttributes    = props.setAttributes;
-			var blockProps       = useBlockProps( {
+			var attributes         = props.attributes;
+			var setAttributes      = props.setAttributes;
+			var blockProps         = useBlockProps( {
 				style: { minHeight: '1.5em' }
 			} );
-			var eventTypesState  = useState( [] );
-			var eventTypes       = eventTypesState[ 0 ];
-			var setEventTypes    = eventTypesState[ 1 ];
-			var loadingState     = useState( true );
-			var isLoading        = loadingState[ 0 ];
-			var setIsLoading     = loadingState[ 1 ];
+			var eventTypesState    = useState( [] );
+			var eventTypes         = eventTypesState[ 0 ];
+			var setEventTypes      = eventTypesState[ 1 ];
+			var loadingState       = useState( true );
+			var isLoading          = loadingState[ 0 ];
+			var setIsLoading       = loadingState[ 1 ];
+			var renderState        = useState( '' );
+			var renderedHtml       = renderState[ 0 ];
+			var setRenderedHtml    = renderState[ 1 ];
+			var renderingState     = useState( false );
+			var isRendering        = renderingState[ 0 ];
+			var setIsRendering     = renderingState[ 1 ];
+			var renderCacheRef     = useRef( renderCache );
 
 			useEffect( function () {
 				var isMounted = true;
@@ -44,6 +54,51 @@
 					isMounted = false;
 				};
 			}, [] );
+
+			// Generate cache key from attributes.
+			var cacheKey = JSON.stringify( {
+				event: attributes.event,
+				showSpots: attributes.showSpots,
+				membersOnlyLinks: attributes.membersOnlyLinks,
+			} );
+
+			// Fetch rendered block when attributes change.
+			useEffect( function () {
+				var isMounted = true;
+
+				// Check if we have a cached result.
+				if ( renderCacheRef.current[ cacheKey ] ) {
+					setRenderedHtml( renderCacheRef.current[ cacheKey ] );
+					return;
+				}
+
+				setIsRendering( true );
+				apiFetch( {
+					path: '/upcoming-for-calendly/v1/render-block',
+					method: 'POST',
+					data: {
+						event: attributes.event,
+						showSpots: attributes.showSpots,
+						membersOnlyLinks: attributes.membersOnlyLinks,
+					},
+				} )
+					.then( function ( response ) {
+						if ( isMounted ) {
+							renderCacheRef.current[ cacheKey ] = response.html;
+							setRenderedHtml( response.html );
+							setIsRendering( false );
+						}
+					} )
+					.catch( function () {
+						if ( isMounted ) {
+							setIsRendering( false );
+						}
+					} );
+
+				return function () {
+					isMounted = false;
+				};
+			}, [ cacheKey ] );
 
 			var eventTypeOptions = [ { label: __( 'All Events', 'upcoming-for-calendly' ), value: '' } ].concat( eventTypes );
 
@@ -101,9 +156,12 @@
 				el(
 					'div',
 					Object.assign( {}, blockProps, { key: 'preview' } ),
-					el( ServerSideRender, {
-						block:      'jditc/upcoming-for-calendly',
-						attributes: attributes,
+					isRendering && el( Notice, {
+						status: 'info',
+						isDismissible: false,
+					}, __( 'Rendering preview…', 'upcoming-for-calendly' ) ),
+					! isRendering && renderedHtml && el( 'div', {
+						dangerouslySetInnerHTML: { __html: renderedHtml },
 					} )
 				),
 			];

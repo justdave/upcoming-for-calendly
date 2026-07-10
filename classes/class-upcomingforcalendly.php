@@ -192,6 +192,18 @@ class UpcomingForCalendly {
 				},
 			)
 		);
+
+		register_rest_route(
+			'upcoming-for-calendly/v1',
+			'/render-block',
+			array(
+				'methods'             => 'POST',
+				'callback'            => array( $this, 'rest_render_block' ),
+				'permission_callback' => function () {
+					return current_user_can( 'edit_posts' );
+				},
+			)
+		);
 	}
 
 	/**
@@ -235,6 +247,28 @@ class UpcomingForCalendly {
 		);
 
 		return new \WP_REST_Response( $event_types );
+	}
+
+	/**
+	 * REST endpoint to render the block with given attributes.
+	 *
+	 * @param \WP_REST_Request $request The REST request object.
+	 *
+	 * @return \WP_REST_Response
+	 */
+	public function rest_render_block( \WP_REST_Request $request ) {
+		$params = $request->get_json_params();
+
+		$event              = isset( $params['event'] ) ? (string) $params['event'] : '';
+		$show_spots         = isset( $params['showSpots'] ) ? (bool) $params['showSpots'] : true;
+		$members_only_links = isset( $params['membersOnlyLinks'] ) ? (bool) $params['membersOnlyLinks'] : false;
+
+		$html = $this->render_event_list( $event, $show_spots, $members_only_links );
+
+		return new \WP_REST_Response(
+			array( 'html' => $html ),
+			200
+		);
 	}
 
 	/**

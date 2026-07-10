@@ -1,8 +1,6 @@
 #### unreleased changes
 
-* New features:
-* Bug fixes:
-* Under the hood:
+* Performance fixes to editor rendering in Gutenberg block.
 
 #### 2.0.1 / 2026-07-10
 
