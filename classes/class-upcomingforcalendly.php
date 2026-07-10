@@ -140,7 +140,18 @@ class UpcomingForCalendly {
 <p class="description"><?php printf( esc_html__( 'Currently cached objects: %d', 'upcoming-for-calendly' ), (int) $cached_objects ); ?></p>
 <p class="submit"><input id="uefc_invalidate_cache" class="button" type="submit" value="<?php esc_attr_e( 'Clear API Cache', 'upcoming-for-calendly' ); ?>" name="uefc_invalidate_cache"></p>
 </form>
-<p><?php esc_html_e( 'To place a list of your upcoming events that have already been scheduled into a post or page, use the shortcode', 'upcoming-for-calendly' ); ?> <code>[upcoming-for-calendly]</code>. <?php esc_html_e( 'To restrict it to a specific event type, pass the title of the event (must be an exact match) like so:', 'upcoming-for-calendly' ); ?> <code>[upcoming-for-calendly event="Event Name"]</code>.</p>
+<h2><?php esc_html_e( 'Usage', 'upcoming-for-calendly' ); ?></h2>
+<h3><?php esc_html_e( 'Gutenberg Block', 'upcoming-for-calendly' ); ?></h3>
+<p><?php esc_html_e( 'The easiest way to add your upcoming events to a post or page is to use the Gutenberg block. When editing a post or page, search for "Upcoming for Calendly" in the block inserter and add it. You can then configure:', 'upcoming-for-calendly' ); ?></p>
+<ul>
+	<li><strong><?php esc_html_e( 'Event name filter', 'upcoming-for-calendly' ); ?></strong> - <?php esc_html_e( 'Select a specific event type from your Calendly account, or leave as "All Events" to show all.', 'upcoming-for-calendly' ); ?></li>
+	<li><strong><?php esc_html_e( 'Show remaining spots', 'upcoming-for-calendly' ); ?></strong> - <?php esc_html_e( 'Toggle to show or hide the remaining available spots for each event.', 'upcoming-for-calendly' ); ?></li>
+	<li><strong><?php esc_html_e( 'Members-only booking links', 'upcoming-for-calendly' ); ?></strong> - <?php esc_html_e( 'When enabled, only logged-in users will see clickable booking links. Logged-out visitors will still see event dates as plain text.', 'upcoming-for-calendly' ); ?></li>
+</ul>
+
+<h3><?php esc_html_e( 'Shortcode (Legacy)', 'upcoming-for-calendly' ); ?></h3>
+<p><?php esc_html_e( 'You can also use the shortcode for backward compatibility. Place', 'upcoming-for-calendly' ); ?> <code>[upcoming-for-calendly]</code> <?php esc_html_e( 'on a post or page where you want the list to appear.', 'upcoming-for-calendly' ); ?></p>
+<p><?php esc_html_e( 'To restrict it to a specific event type, pass the title of the event (must be an exact match) like so:', 'upcoming-for-calendly' ); ?> <code>[upcoming-for-calendly event="Event Name"]</code>.</p>
 <p><?php esc_html_e( 'If you do not want to show remaining spot counts, add', 'upcoming-for-calendly' ); ?> <code>show_spots="false"</code> <?php esc_html_e( 'to your shortcode.', 'upcoming-for-calendly' ); ?></p>
 <p><?php esc_html_e( 'If you only want logged-in members to get booking links, add', 'upcoming-for-calendly' ); ?> <code>members_only_links="true"</code> <?php esc_html_e( 'to your shortcode. Logged-out visitors will still see event dates, but they will not be clickable.', 'upcoming-for-calendly' ); ?></p>
 		<?php
